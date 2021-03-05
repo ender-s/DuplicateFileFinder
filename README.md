@@ -1,10 +1,15 @@
 # DuplicateFileFinder
  A GUI-based tool that finds duplicate files under the selected directory.  
  This program checks identicalness of files by comparing their md5 sums.  
- It lists duplicate file occurrences as sorted by size. (descending)
+ It lists duplicate file occurrences as sorted by size. (descending)  
 
 # OS Support  
- Tested on Windows and Linux.
+ Tested on Windows and Linux.  
+
+# Requirements  
+ Python (version >= 3)  
+ &nbsp;&nbsp;Required modules:  
+ &nbsp;&nbsp;&nbsp;&nbsp;PyQt5  
 
 # Screenshot
  ![Screenshot](https://raw.githubusercontent.com/ender-s/DuplicateFileFinder/main/ss.png)

@@ -25,20 +25,14 @@ class FileSaver(QtCore.QThread):
     
     def run(self):
         with open(self.path, "w", encoding="utf-8") as f:
-            f.write(self._duplicate_information_str())
+            for md5, info in self.main.duplicateInformation:
+                f.write(f"MD5: {md5} | size: {self.tools.humanReadableSize(info[1])}\n")
+                for n, path in enumerate(info[0]):
+                    f.write(f"\t{n+1}: {path}\n")
+            
+            f.write("\nStatistics:\n" + self.main.get_statistics())
+
         self.processDone.emit(f"Information was successfully saved on {self.path}")
-    
-    def _duplicate_information_str(self):
-        result = ""
-        for md5, info in self.main.duplicateInformation:
-            result += f"MD5: {md5} | size: {self.tools.humanReadableSize(info[1])}\n"
-            for n, path in enumerate(info[0]):
-                result += f"\t{n+1}: {path}\n"
-        
-        result += "\nStatistics:\n" + self.main._get_statistics()
-        return result
-    
-    
 
 class Main(object):
     def __init__(self):
@@ -114,12 +108,12 @@ class Main(object):
             self._update_progress_bar_value(100)
             self._update_status_bar(self.ui.statusbar.currentMessage() + "   Done!")
 
-            text = "Process is done! Results:\n" + self._get_statistics()
+            text = "Process is done! Results:\n" + self.get_statistics()
             self._show_information("Done!", text)
 
         self._end_process_set_button_states()
     
-    def _get_statistics(self):
+    def get_statistics(self):
         text = ""
         text += "Number of all duplicate files: " + str(self.crawler.totalCopyCount) + "\n"
         text += "Number of unnecessary duplicates: " + str(self.crawler.totalCopyCount - self.crawler.uniqueCopyCount) + "\n"
